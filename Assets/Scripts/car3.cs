@@ -47,8 +47,8 @@ public class car3 : MonoBehaviour
 
         transform.Rotate(0, y, 0);
         //鼠标隐藏
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        /*Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;*/
         //按下W键并且速度没达到最大，则速度增加
         if (Input.GetKey(KeyCode.W) & speedOne < speedMax)
         {
