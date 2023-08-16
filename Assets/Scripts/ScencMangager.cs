@@ -9,15 +9,13 @@ namespace car
     {
         //按鈕與程式溝通方式
         public void ChangeScene()
-        {
-            print("切換場景");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("遊戲畫面");
+        { 
+        
         }
 
         public void Quit()
         {
-            print("退出遊戲");
-            Application.Quit();
+            
         }
     }
 }
