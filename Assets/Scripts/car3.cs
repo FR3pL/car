@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class car3 : MonoBehaviour
 {
-    public Transform t;
-    public Transform tt;
-    public Transform ttt;
-    public Transform tttt;
+    public Transform Leftfront;
+    public Transform Rightforward;
+    public Transform Rearleft;
+    public Transform Rightback;
 
     private float y;
     //车辆控制速度参数
@@ -25,7 +25,7 @@ public class car3 : MonoBehaviour
 
     float Speed()
     {
-        curpos = t.transform.position;//当前点 float
+        curpos = Leftfront.transform.position;//当前点 float
         _speed = (Vector3.Magnitude(curpos - lastpos) / Time.deltaTime);//与上一个点做计算除去当前帧花的时间。
         lastpos = curpos;//把当前点保存下一次用
         return _speed;
@@ -40,10 +40,10 @@ public class car3 : MonoBehaviour
 
 
         f += Speed();
-        tttt.transform.localEulerAngles = new Vector3(f, 0,0.0f);
-        ttt.transform.localEulerAngles = new Vector3(f, 0, 0.0f);
-        tt.transform.localEulerAngles = new Vector3(f, Input.GetAxis("Horizontal")*90, 0.0f);
-        t.transform.localEulerAngles = new Vector3(f, Input.GetAxis("Horizontal") * 90, 0.0f);
+        Rightback.transform.localEulerAngles = new Vector3(f, 0,0.0f);
+        Rearleft.transform.localEulerAngles = new Vector3(f, 0, 0.0f);
+        Rightforward.transform.localEulerAngles = new Vector3(f, Input.GetAxis("Horizontal")*90, 0.0f);
+        Leftfront.transform.localEulerAngles = new Vector3(f, Input.GetAxis("Horizontal") * 90, 0.0f);
 
         transform.Rotate(0, y, 0);
         //鼠标隐藏
