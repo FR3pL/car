@@ -6,7 +6,7 @@ PhysicMaterial:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: "\u96F6\u5F48\u8DF3"
+  m_Name: "\u96F6\u5F48\u529B"
   dynamicFriction: 0.6
   staticFriction: 0
   bounciness: 0
