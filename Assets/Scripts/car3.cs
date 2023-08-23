@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,11 @@ public class car3 : MonoBehaviour
     float f = 10;
     float _speed;
     Vector3 curpos, lastpos;
+
+    internal int carTransmission()
+    {
+        throw new NotImplementedException();
+    }
 
     float Speed()
     {
