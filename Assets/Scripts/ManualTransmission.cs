@@ -56,12 +56,15 @@ public class ManualTransmission : MonoBehaviour
         {
             speed += Time.deltaTime * 10.0f; // 根據檔位遞增速度
         }
-    }
 
-    private void ChangeToNeutral()
-    {
-        gear = 0; // 變換到 N 檔
-    }
+        if (!isClutchPressed)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                gear = 0; // 變換到 N 檔
+            }                
+        }
+    }    
 
     private void ChangeToReverse()
     {
