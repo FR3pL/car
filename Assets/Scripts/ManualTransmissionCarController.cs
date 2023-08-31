@@ -21,15 +21,30 @@ public class ManualTransmissionCarController : MonoBehaviour
     private void Update()
     {
         // 判斷換檔
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            currentGear = Mathf.Clamp(currentGear + 1, 0, 3); // 增加檔位
+            currentGear = 0; // N檔
+            currentSpeed = 0.0f;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            currentGear = 1; // 一檔
             currentSpeed = Mathf.Max(currentSpeed, gearSpeeds[currentGear - 1]);
         }
-        else if (Input.GetMouseButtonDown(1))
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            currentGear = Mathf.Clamp(currentGear - 1, 0, 3); // 降低檔位
+            currentGear = 2; // 二檔
             currentSpeed = Mathf.Max(currentSpeed, gearSpeeds[currentGear - 1]);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            currentGear = 3; // 三檔
+            currentSpeed = Mathf.Max(currentSpeed, gearSpeeds[currentGear - 1]);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            currentGear = -1; // R檔
+            currentSpeed = -Mathf.Min(currentSpeed, maxReverseSpeed);
         }
 
         // 判斷離合器
