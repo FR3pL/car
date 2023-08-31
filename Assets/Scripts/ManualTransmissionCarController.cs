@@ -16,6 +16,8 @@ public class ManualTransmissionCarController : MonoBehaviour
 
     private void Update()
     {
+        print(currentGear);
+
         // 檢查換檔輸入
         if (!changingGear)
         {
