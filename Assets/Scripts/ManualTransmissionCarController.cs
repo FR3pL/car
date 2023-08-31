@@ -11,6 +11,7 @@ public class ManualTransmissionCarController : MonoBehaviour
     private Rigidbody carRigidbody;
     private int currentGear = 0; // 預設N檔
     private bool clutchPressed = false;
+    private bool brakePressed = false;
     private float currentSpeed = 0.0f;
 
     private void Start()
@@ -29,82 +30,76 @@ public class ManualTransmissionCarController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             currentGear = 1; // 一檔
-            currentSpeed = Mathf.Max(currentSpeed, gearSpeeds[currentGear - 1]);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             currentGear = 2; // 二檔
-            currentSpeed = Mathf.Max(currentSpeed, gearSpeeds[currentGear - 1]);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             currentGear = 3; // 三檔
-            currentSpeed = Mathf.Max(currentSpeed, gearSpeeds[currentGear - 1]);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             currentGear = -1; // R檔
-            currentSpeed = -Mathf.Min(currentSpeed, maxReverseSpeed);
         }
 
-        // 判斷離合器
-        clutchPressed = Input.GetKey(KeyCode.LeftControl);
+        // 判斷離合器和剎車
+        clutchPressed = Input.GetKey(KeyCode.Space);
+        brakePressed = Input.GetKey(KeyCode.S);
 
         // 控制轉彎
         float turnAngle = 0.0f;
-        if (currentSpeed > 0 || currentSpeed < 0)
+        if (currentSpeed != 0)
         {
             turnAngle = Input.GetAxis("Horizontal") * maxTurnAngle;
             transform.rotation *= Quaternion.Euler(0, turnAngle * Time.deltaTime, 0);
         }
 
         // 控制剎車和油門
-        float brakeForce = Input.GetKey(KeyCode.S) ? maxBrakeForce : 0;
         float throttle = 0.0f;
-        if (currentGear > 0)
+        float brakeForce = brakePressed ? maxBrakeForce : 0;
+
+        // 根據檔位控制油門
+        if (!clutchPressed) // 如果沒有踩離合器
         {
-            throttle = Input.GetKey(KeyCode.W) ? acceleration : 0;
-        }
-        else if (currentGear == 0)
-        {
-            throttle = Input.GetKey(KeyCode.W) ? 0 : 0; // N檔時不能前進
-        }
-        else if (currentGear == -1)
-        {
-            throttle = Input.GetKey(KeyCode.W) ? -acceleration : 0; // R檔時後退
+            if (currentGear > 0)
+            {
+                throttle = Input.GetKey(KeyCode.W) ? acceleration : 0;
+            }
+            else if (currentGear == -1)
+            {
+                throttle = Input.GetKey(KeyCode.W) ? -acceleration : 0; // R檔時後退
+            }
         }
 
-        // 計算目標速度
+        // 計算目標速度並根據離合器控制速度
         float targetSpeed = 0.0f;
         if (currentGear > 0)
         {
-            targetSpeed = gearSpeeds[currentGear - 1] * throttle;
-        }
-        else if (currentGear == 0)
-        {
-            targetSpeed = currentSpeed;
+            targetSpeed = gearSpeeds[currentGear - 1];
         }
         else if (currentGear == -1)
         {
-            targetSpeed = Mathf.Min(currentSpeed, -maxReverseSpeed);
+            targetSpeed = -maxReverseSpeed;
         }
 
-        // 根據離合器控制速度
         if (!clutchPressed)
         {
-            targetSpeed = Mathf.Min(targetSpeed, currentSpeed);
+            currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, Time.deltaTime * acceleration);
+        }
+
+        // 如果在一檔至三檔，速度小於一檔最大速度的一半，且剎車被按下，則進入N檔
+        if (currentGear > 0 && currentGear <= 3 && currentSpeed < gearSpeeds[currentGear - 1] / 2 && brakePressed)
+        {
+            currentGear = 0; // 進入N檔
+            currentSpeed = 0.0f;
         }
 
         // 更新速度
-        Vector3 velocity = transform.forward * targetSpeed;
+        Vector3 velocity = transform.forward * currentSpeed;
         velocity.y = carRigidbody.velocity.y;
         carRigidbody.velocity = velocity;
-
-        // 換檔時檢查是否要降檔
-        if (currentGear > 0 && throttle > 0 && currentSpeed >= gearSpeeds[currentGear - 1])
-        {
-            currentGear--;
-        }
     }
 
     // 取得目前檔位
