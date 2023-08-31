@@ -2,48 +2,52 @@
 
 public class ManualTransmissionCarController : MonoBehaviour
 {
-    public float maxTurnAngle = 45.0f; // 最大轉彎角度
-    public float maxBrakeForce = 20.0f; // 最大剎車力
-    public float acceleration = 10.0f; // 油門加速度
-    public float maxSpeed = 50.0f; // 最大速度
-    public float[] gearSpeeds; // 每個檔位的速度
+    public float maxTurnAngle = 45.0f;
+    public float maxBrakeForce = 20.0f;
+    public float acceleration = 10.0f;
+    public float[] gearSpeeds;
+    public float maxReverseSpeed = 10.0f;
 
     private Rigidbody carRigidbody;
-    private int currentGear = 0; // 目前檔位，0為空檔
+    private int currentGear = 0; // 預設N檔
     private bool clutchPressed = false;
+    private float currentSpeed = 0.0f;
 
     private void Start()
     {
         carRigidbody = GetComponent<Rigidbody>();
     }
 
-    // 新增這個方法以返回目前檔位
-    public int GetCurrentGear()
-    {
-        return currentGear;
-    }
-
     private void Update()
     {
-        // 控制檔位
+        // 判斷換檔
         if (Input.GetKeyDown(KeyCode.N))
         {
-            currentGear = 0; // 空檔
+            currentGear = 0; // N檔
+            currentSpeed = 0.0f;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             currentGear = 1; // 一檔
+            currentSpeed = Mathf.Max(currentSpeed, gearSpeeds[currentGear - 1]);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             currentGear = 2; // 二檔
+            currentSpeed = Mathf.Max(currentSpeed, gearSpeeds[currentGear - 1]);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             currentGear = 3; // 三檔
+            currentSpeed = Mathf.Max(currentSpeed, gearSpeeds[currentGear - 1]);
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
+        {
+            currentGear = -1; // 倒車檔
+            currentSpeed = -Mathf.Min(currentSpeed, maxReverseSpeed);
         }
 
-        // 控制離合器
+        // 判斷離合器
         clutchPressed = Input.GetKey(KeyCode.LeftControl);
 
         // 控制轉彎
@@ -54,22 +58,42 @@ public class ManualTransmissionCarController : MonoBehaviour
         float brakeForce = Input.GetKey(KeyCode.S) ? maxBrakeForce : 0;
         float throttle = Input.GetKey(KeyCode.W) ? acceleration : 0;
 
-        // 根據離合器狀態計算速度
-        float targetSpeed = gearSpeeds[currentGear] * throttle;
+        // 計算目標速度
+        float targetSpeed = 0.0f;
+        if (currentGear > 0)
+        {
+            targetSpeed = gearSpeeds[currentGear - 1] * throttle;
+        }
+        else if (currentGear == 0)
+        {
+            targetSpeed = currentSpeed;
+        }
+        else if (currentGear == -1)
+        {
+            targetSpeed = Mathf.Min(currentSpeed, -maxReverseSpeed);
+        }
+
+        // 根據離合器控制速度
         if (!clutchPressed)
         {
-            targetSpeed = Mathf.Min(targetSpeed, carRigidbody.velocity.magnitude);
+            targetSpeed = Mathf.Min(targetSpeed, currentSpeed);
         }
 
         // 更新速度
         Vector3 velocity = transform.forward * targetSpeed;
-        velocity.y = carRigidbody.velocity.y; // 保持垂直速度不變
+        velocity.y = carRigidbody.velocity.y;
         carRigidbody.velocity = velocity;
 
-        // 換檔時增加速度檢查
-        if (currentGear > 0 && throttle > 0 && carRigidbody.velocity.magnitude >= gearSpeeds[currentGear])
+        // 換檔時檢查是否要降檔
+        if (currentGear > 0 && throttle > 0 && currentSpeed >= gearSpeeds[currentGear - 1])
         {
             currentGear--;
         }
+    }
+
+    // 取得目前檔位
+    public int GetCurrentGear()
+    {
+        return currentGear;
     }
 }
