@@ -1485,11 +1485,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90fd25c04f54de540a7e552503d5d532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTurnAngle: 45
   maxBrakeForce: 20
-  acceleration: 10
-  gearSpeeds: []
-  maxReverseSpeed: 10
+  maxSpeedInGears:
+  - 0
+  - 30
+  - 60
+  - 90
+  maxTurnSpeed: 5
+  maxReverseSpeed: -30
 --- !u!1 &1119468318
 GameObject:
   m_ObjectHideFlags: 0
