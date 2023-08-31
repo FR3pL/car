@@ -9,11 +9,12 @@ public class ManualTransmission : MonoBehaviour
     private void Update()
     {
         // 根據玩家輸入切換檔位
-        if (Input.GetKeyDown(KeyCode.Alpha0)) ChangeToNeutral();
-        if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeGear(1);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeGear(2);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) ChangeGear(3);
-        if (Input.GetKeyDown(KeyCode.Alpha8)) ChangeToReverse();
+        //if (Input.GetKeyDown(KeyCode.Alpha0)) ChangeToNeutral();
+        //if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeGear(1);
+        //if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeGear(2);
+        //if (Input.GetKeyDown(KeyCode.Alpha3)) ChangeGear(3);
+        //if (Input.GetKeyDown(KeyCode.Alpha8)) ChangeToReverse();
+        print(gear);
 
         // 離合器控制邏輯
         if (Input.GetKeyDown(KeyCode.Space))

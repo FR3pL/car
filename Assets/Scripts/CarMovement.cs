@@ -3,8 +3,8 @@
 public class CarMovement : MonoBehaviour
 {
     public ManualTransmission transmissionScript; // 參考到 ManualTransmission 腳本
-    public Transform frontWheels; // 前輪的 Transform
-    public Transform rearWheels; // 後輪的 Transform
+    public Transform frontWheelsR; // 右前輪的 Transform
+    public Transform frontWheelsL; // 左前輪的 Transform
     public float maxSteeringAngle = 45.0f; // 最大轉彎角度
     public float brakeForce = 500.0f; // 剎車力道
 
@@ -68,8 +68,8 @@ public class CarMovement : MonoBehaviour
     private void LateUpdate()
     {
         // 將轉向角度應用到輪子的轉向
-        frontWheels.localEulerAngles = new Vector3(0, currentSteeringAngle, 0); // 設定前輪轉向角度
-        //rearWheels.localEulerAngles = new Vector3(0, currentSteeringAngle, 0); // 設定後輪轉向角度
+        frontWheelsR.localEulerAngles = new Vector3(0, currentSteeringAngle, 0); // 設定右前輪轉向角度
+        frontWheelsL.localEulerAngles = new Vector3(0, currentSteeringAngle, 0); // 設定左前輪轉向角度
     }
 }
 
