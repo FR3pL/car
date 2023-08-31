@@ -21,42 +21,43 @@ public class ManualTransmissionCarController : MonoBehaviour
     private void Update()
     {
         // 判斷換檔
-        if (Input.GetKeyDown(KeyCode.N))
+        if (Input.GetMouseButtonDown(0))
         {
-            currentGear = 0; // N檔
-            currentSpeed = 0.0f;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            currentGear = 1; // 一檔
+            currentGear = Mathf.Clamp(currentGear + 1, 0, 3); // 增加檔位
             currentSpeed = Mathf.Max(currentSpeed, gearSpeeds[currentGear - 1]);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetMouseButtonDown(1))
         {
-            currentGear = 2; // 二檔
+            currentGear = Mathf.Clamp(currentGear - 1, 0, 3); // 降低檔位
             currentSpeed = Mathf.Max(currentSpeed, gearSpeeds[currentGear - 1]);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            currentGear = 3; // 三檔
-            currentSpeed = Mathf.Max(currentSpeed, gearSpeeds[currentGear - 1]);
-        }
-        else if (Input.GetKeyDown(KeyCode.R))
-        {
-            currentGear = -1; // 倒車檔
-            currentSpeed = -Mathf.Min(currentSpeed, maxReverseSpeed);
         }
 
         // 判斷離合器
         clutchPressed = Input.GetKey(KeyCode.LeftControl);
 
         // 控制轉彎
-        float turnAngle = Input.GetAxis("Horizontal") * maxTurnAngle;
-        transform.rotation *= Quaternion.Euler(0, turnAngle * Time.deltaTime, 0);
+        float turnAngle = 0.0f;
+        if (currentSpeed > 0 || currentSpeed < 0)
+        {
+            turnAngle = Input.GetAxis("Horizontal") * maxTurnAngle;
+            transform.rotation *= Quaternion.Euler(0, turnAngle * Time.deltaTime, 0);
+        }
 
         // 控制剎車和油門
         float brakeForce = Input.GetKey(KeyCode.S) ? maxBrakeForce : 0;
-        float throttle = Input.GetKey(KeyCode.W) ? acceleration : 0;
+        float throttle = 0.0f;
+        if (currentGear > 0)
+        {
+            throttle = Input.GetKey(KeyCode.W) ? acceleration : 0;
+        }
+        else if (currentGear == 0)
+        {
+            throttle = Input.GetKey(KeyCode.W) ? 0 : 0; // N檔時不能前進
+        }
+        else if (currentGear == -1)
+        {
+            throttle = Input.GetKey(KeyCode.W) ? -acceleration : 0; // R檔時後退
+        }
 
         // 計算目標速度
         float targetSpeed = 0.0f;
