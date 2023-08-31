@@ -1454,7 +1454,7 @@ PrefabInstance:
       addedObject: {fileID: 250114470}
     - targetCorrespondingSourceObject: {fileID: 1610265466720824, guid: 02e641040fb499c49a848e40f535164a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 956144677}
+      addedObject: {fileID: 956144679}
     - targetCorrespondingSourceObject: {fileID: 1188388582976854, guid: 02e641040fb499c49a848e40f535164a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1589787551}
@@ -1473,7 +1473,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4013073016293618, guid: 02e641040fb499c49a848e40f535164a, type: 3}
   m_PrefabInstance: {fileID: 956144674}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &956144677
+--- !u!114 &956144679
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1482,17 +1482,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 250114465}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90fd25c04f54de540a7e552503d5d532, type: 3}
+  m_Script: {fileID: 11500000, guid: 228432f455c32a949a875d768b36c76f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxBrakeForce: 20
-  maxSpeedInGears:
-  - 0
-  - 30
-  - 60
-  - 90
-  maxTurnSpeed: 5
-  maxReverseSpeed: -30
+  gear: 8
 --- !u!1 &1119468318
 GameObject:
   m_ObjectHideFlags: 0
