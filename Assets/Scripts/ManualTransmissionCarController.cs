@@ -100,6 +100,8 @@ public class ManualTransmissionCarController : MonoBehaviour
         Vector3 velocity = transform.forward * currentSpeed;
         velocity.y = carRigidbody.velocity.y;
         carRigidbody.velocity = velocity;
+
+        print(currentGear);
     }
 
     // 取得目前檔位
