@@ -9,7 +9,7 @@ public class GearDisplay : MonoBehaviour
     private void Update()
     {
         int currentGear = transmissionScript.gear; // 取得目前檔位的數值
-        string gearString = ""; // 儲存檔位文字的字串
+        string gearString = "檔位"; // 儲存檔位文字的字串
 
         // 使用 switch 陳述式根據檔位數值設定對應的文字
         switch (currentGear)
@@ -32,7 +32,7 @@ public class GearDisplay : MonoBehaviour
         }
 
         // 將設定好的檔位文字更新到 UI 元件上
-        gearText.text = "Gear: " + gearString;
+        gearText.text = "目前檔位: " + gearString;
     }
 }
 
