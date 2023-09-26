@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GearDisplay : MonoBehaviour
 {
     public ManualTransmission transmissionScript; // 參考到 ManualTransmission 腳本
-    public Text gearText; // 顯示檔位的文字 UI 元件
+    public TextMeshProUGUI gearText; // 顯示檔位的文字 UI 元件
 
     private void Update()
     {
